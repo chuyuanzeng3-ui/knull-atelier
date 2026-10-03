@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>盒子 1122 · 我们</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    font-family: 'Baloo 2', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  }
+  body {
+    background-color: #F9F4D4;
+    background-image: radial-gradient(circle, #AFD3E8 5px, transparent 5.5px);
+    background-size: 96px 96px;
+  }
+  .section {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 24px 24px 60px;
+  }
+  .back-btn {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #FFFDF6;
+    border: 2px solid #6B4226;
+    color: #6B4226;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    z-index: 10;
+  }
+  .box-area {
+    position: relative;
+    width: 100%;
+    max-width: 280px;
+    height: 280px;
+    margin-top: 70px;
+  }
+  .num-tag {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 74px;
+    height: 52px;
+    padding: 0 14px;
+    border-radius: 26px;
+    background: #FBE0DC;
+    border: 3px solid #6B4226;
+    color: #B44A38;
+    font-size: 21px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    animation: pop 0.5s ease 0.15s both;
+    white-space: nowrap;
+  }
+  .box-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+    pointer-events: none;
+  }
+  .box-closed { opacity: 1; animation: shake 0.4s ease 1.6s 2; }
+  .box-open { opacity: 0; }
+  .box-open.show {
+    animation: popIn 0.5s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  .box-closed.hide {
+    animation: fadeOutQuick 0.3s ease forwards;
+  }
+  @keyframes pop {
+    0% { transform: translateX(-50%) scale(0); }
+    70% { transform: translateX(-50%) scale(1.15); }
+    100% { transform: translateX(-50%) scale(1); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-3deg); }
+    75% { transform: rotate(3deg); }
+  }
+  @keyframes fadeOutQuick {
+    to { opacity: 0; transform: scale(0.85); }
+  }
+  @keyframes popIn {
+    0% { opacity: 0; transform: scale(0.6); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .story-tag {
+    margin-top: 18px;
+    font-size: 13px;
+    color: #B89A6A;
+    text-align: center;
+    opacity: 0;
+  }
+  .story-tag.show {
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .photos {
+    width: 100%;
+    max-width: 340px;
+    margin-top: 26px;
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .photos.show {
+    animation: fadeUp 0.6s ease forwards;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .photo-card {
+    width: 46%;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px rgba(107,66,38,0.18);
+  }
+  .photo-card:nth-child(1) { transform: rotate(-6deg); margin-top: 10px; }
+  .photo-card:nth-child(2) { transform: rotate(5deg); }
+  .photo-card img {
+    width: 100%;
+    display: block;
+    border-radius: 4px;
+  }
+  .scroll-hint {
+    margin-top: 34px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: #B89A6A;
+    font-size: 13px;
+    opacity: 0;
+  }
+  .scroll-hint.show {
+    animation: fadeUp 0.6s ease forwards;
+  }
+  .scroll-hint .arrow {
+    font-size: 18px;
+    animation: bob 1.4s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  .finale {
+    justify-content: center;
+  }
+  .finale-hearts {
+    font-size: 22px;
+    letter-spacing: 10px;
+    color: #E2685F;
+    margin-bottom: 10px;
+  }
+  .finale-title {
+    font-size: 34px;
+    font-weight: 600;
+    color: #C97F3B;
+  }
+  .finale-name {
+    font-size: 26px;
+    font-weight: 600;
+    color: #5C3A21;
+    margin-top: 6px;
+  }
+  .finale-msg {
+    margin-top: 22px;
+    max-width: 320px;
+    text-align: center;
+    color: #6B4226;
+    font-size: 15px;
+    line-height: 1.9;
+    background: #FFFDF6;
+    border: 2px solid #E3D9AE;
+    border-radius: 16px;
+    padding: 18px 20px;
+  }
+  .back-select {
+    margin-top: 28px;
+    font-size: 13px;
+    color: #B89A6A;
+    text-decoration: none;
+    border-bottom: 1px solid #B89A6A;
+    padding-bottom: 2px;
+  }
+</style>
+</head>
+<body>
+
+<div class="section" id="topSection">
+  <a class="back-btn" href="select.html" aria-label="返回选面包">&#8592;</a>
+
+  <div class="box-area">
+    <div class="num-tag">1122</div>
+    <img class="box-img box-closed" id="boxClosed" src="assets/giftbox_closed.png" alt="礼物盒">
+    <img class="box-img box-open" id="boxOpen" src="assets/giftbox_open.png" alt="打开的礼物盒">
+  </div>
+
+  <div class="story-tag" id="storyTag">我们的拍立得</div>
+
+  <div class="photos" id="photos">
+    <div class="photo-card"><img src="assets/box4_photo1.jpg" alt="拍立得照片一"></div>
+    <div class="photo-card"><img src="assets/box4_photo2.jpg" alt="拍立得照片二"></div>
+  </div>
+
+  <div class="scroll-hint" id="scrollHint">
+    <span>继续下滑</span>
+    <span class="arrow">&#8595;</span>
+  </div>
+</div>
+
+<div class="section finale">
+  <div class="finale-hearts">&#9825; &#9825; &#9825;</div>
+  <div class="finale-title">happy birthday</div>
+  <div class="finale-name">小和</div>
+  <div class="finale-msg">
+    人有很多记忆盒子，我们会有越来越多的盒子。
+    生日快乐，愿你被爱和好运一直包围。
+  </div>
+  <a class="back-select" href="select.html">再看看其它面包</a>
+</div>
+
+<script>
+  var boxClosed = document.getElementById('boxClosed');
+  var boxOpen = document.getElementById('boxOpen');
+  var storyTag = document.getElementById('storyTag');
+  var photos = document.getElementById('photos');
+  var scrollHint = document.getElementById('scrollHint');
+
+  setTimeout(function () {
+    boxClosed.classList.add('hide');
+    boxOpen.classList.add('show');
+    storyTag.classList.add('show');
+  }, 2400);
+
+  setTimeout(function () {
+    photos.classList.add('show');
+  }, 2900);
+
+  setTimeout(function () {
+    scrollHint.classList.add('show');
+  }, 3400);
+</script>
+
+</body>
+</html>

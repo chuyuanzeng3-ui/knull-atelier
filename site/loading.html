@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>生日贺卡 · loading</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Baloo 2', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  }
+  body {
+    background-color: #F9F4D4;
+    background-image: radial-gradient(circle, #AFD3E8 5px, transparent 5.5px);
+    background-size: 96px 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stage {
+    width: 100%;
+    max-width: 480px;
+    height: 100%;
+    max-height: 900px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .art {
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 8vh;
+    pointer-events: none;
+    user-select: none;
+  }
+  .loading-row {
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    padding: 0 4px;
+  }
+  .loading-label {
+    color: #6B4226;
+    font-weight: 600;
+    font-size: 20px;
+  }
+  .loading-pct {
+    color: #6B4226;
+    font-weight: 600;
+    font-size: 18px;
+  }
+  .bar-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 340px;
+    height: 34px;
+  }
+  .bar-track {
+    position: absolute;
+    inset: 0;
+    background: #EFE7C4;
+    border: 2.5px solid #6B4226;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    width: 0%;
+    background: repeating-linear-gradient(
+      -45deg,
+      #F0B860,
+      #F0B860 10px,
+      #E8AC4C 10px,
+      #E8AC4C 20px
+    );
+    border-radius: 20px 0 0 20px;
+    transition: width 0.15s linear;
+  }
+  .bar-bear {
+    position: absolute;
+    top: -46px;
+    left: 0%;
+    width: 62px;
+    height: auto;
+    transform: translateX(-50%);
+    transition: left 0.15s linear;
+    filter: drop-shadow(0 2px 1px rgba(107,66,38,0.15));
+  }
+  .hint {
+    margin-top: 22px;
+    font-size: 13px;
+    color: #B89A6A;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .hint.show { opacity: 1; }
+  .stage.fading {
+    animation: fadeOut 0.6s ease forwards;
+  }
+  @keyframes fadeOut {
+    to { opacity: 0; transform: scale(0.98); }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <img class="art" src="assets/croissant_top.png" alt="croissant">
+
+  <div class="loading-row">
+    <span class="loading-label">Loading...</span>
+    <span class="loading-pct" id="pctText">0%</span>
+  </div>
+
+  <div class="bar-wrap">
+    <img class="bar-bear" id="bearSprite" src="assets/bear_sprite.png" alt="">
+    <div class="bar-track">
+      <div class="bar-fill" id="barFill"></div>
+    </div>
+  </div>
+
+  <div class="hint" id="hint">轻触任意处进入</div>
+</div>
+
+<script>
+  var fill = document.getElementById('barFill');
+  var pctText = document.getElementById('pctText');
+  var bear = document.getElementById('bearSprite');
+  var hint = document.getElementById('hint');
+  var stage = document.getElementById('stage');
+
+  var pct = 0;
+  var done = false;
+
+  function tick() {
+    if (pct >= 100) {
+      pct = 100;
+      done = true;
+    } else {
+      var step = pct < 70 ? (1 + Math.random() * 3) : (0.4 + Math.random() * 1.2);
+      pct += step;
+      if (pct > 100) pct = 100;
+    }
+
+    fill.style.width = pct + '%';
+    bear.style.left = pct + '%';
+    pctText.textContent = Math.floor(pct) + '%';
+
+    if (!done) {
+      setTimeout(tick, 90);
+    } else {
+      hint.classList.add('show');
+      goNext();
+    }
+  }
+
+  function goNext() {
+    document.body.addEventListener('click', proceed, { once: true });
+  }
+
+  function proceed() {
+    stage.classList.add('fading');
+    setTimeout(function () {
+      window.location.href = 'home.html';
+    }, 550);
+  }
+
+  setTimeout(tick, 300);
+</script>
+
+</body>
+</html>

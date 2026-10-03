@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>盒子 22 · 礼物</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100%;
+    font-family: 'Baloo 2', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  }
+  body {
+    background-color: #F9F4D4;
+    background-image: radial-gradient(circle, #AFD3E8 5px, transparent 5.5px);
+    background-size: 96px 96px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  .stage {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 24px 60px;
+  }
+  .back-btn {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #FFFDF6;
+    border: 2px solid #6B4226;
+    color: #6B4226;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    z-index: 10;
+  }
+  .box-area {
+    position: relative;
+    width: 100%;
+    max-width: 280px;
+    height: 280px;
+    margin-top: 70px;
+  }
+  .num-tag {
+    position: absolute;
+    top: -22px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #FBE0DC;
+    border: 3px solid #6B4226;
+    color: #B44A38;
+    font-size: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    animation: pop 0.5s ease 0.15s both;
+  }
+  .box-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+    pointer-events: none;
+  }
+  .box-closed { opacity: 1; animation: shake 0.4s ease 1.6s 2; }
+  .box-open { opacity: 0; }
+  .box-open.show {
+    animation: popIn 0.5s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  .box-closed.hide {
+    animation: fadeOutQuick 0.3s ease forwards;
+  }
+  @keyframes pop {
+    0% { transform: translateX(-50%) scale(0); }
+    70% { transform: translateX(-50%) scale(1.15); }
+    100% { transform: translateX(-50%) scale(1); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-3deg); }
+    75% { transform: rotate(3deg); }
+  }
+  @keyframes fadeOutQuick {
+    to { opacity: 0; transform: scale(0.85); }
+  }
+  @keyframes popIn {
+    0% { opacity: 0; transform: scale(0.6); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .story-tag {
+    margin-top: 18px;
+    font-size: 13px;
+    color: #B89A6A;
+    text-align: center;
+    opacity: 0;
+  }
+  .story-tag.show {
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .content-card {
+    width: 100%;
+    max-width: 320px;
+    margin-top: 18px;
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  .content-card.show {
+    animation: fadeUp 0.6s ease forwards;
+  }
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .gift-img {
+    width: 100%;
+    border-radius: 20px;
+    display: block;
+    border: 3px solid #6B4226;
+  }
+  .caption {
+    margin-top: 16px;
+    background: #FFFDF6;
+    border: 2px solid #E3D9AE;
+    border-radius: 14px;
+    padding: 14px 16px;
+    color: #6B4226;
+    font-size: 14.5px;
+    line-height: 1.8;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <a class="back-btn" href="select.html" aria-label="返回选面包">&#8592;</a>
+
+  <div class="box-area">
+    <div class="num-tag">22</div>
+    <img class="box-img box-closed" id="boxClosed" src="assets/giftbox_closed.png" alt="礼物盒">
+    <img class="box-img box-open" id="boxOpen" src="assets/giftbox_open.png" alt="打开的礼物盒">
+  </div>
+
+  <div class="story-tag" id="storyTag">礼物揭晓</div>
+
+  <div class="content-card" id="contentCard">
+    <img class="gift-img" src="assets/box2_bag.png" alt="蓝色迷你小挎包">
+    <div class="caption">小和，看到你没有小包，送一个蓝色迷你小挎包。</div>
+  </div>
+</div>
+
+<script>
+  var boxClosed = document.getElementById('boxClosed');
+  var boxOpen = document.getElementById('boxOpen');
+  var storyTag = document.getElementById('storyTag');
+  var contentCard = document.getElementById('contentCard');
+
+  setTimeout(function () {
+    boxClosed.classList.add('hide');
+    boxOpen.classList.add('show');
+    storyTag.classList.add('show');
+  }, 2400);
+
+  setTimeout(function () {
+    contentCard.classList.add('show');
+  }, 2900);
+</script>
+
+</body>
+</html>
